@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 mongoose
   .connect("mongodb://localhost:27017/yt", {
     // For not getting depreciation warning from mongoose
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
     // useCreateIndex: true
   })
   .then(() => {
