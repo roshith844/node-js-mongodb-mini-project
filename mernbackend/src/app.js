@@ -20,11 +20,15 @@ app.set("view engine", "hbs");
 app.set("views", templates_path);
 hbs.registerPartials(partials_path);
 
-app.get("/", (req, res) => {
+app.get("/signup", (req, res) => {
   res.render("register");
 });
+app.get('/', (req, res)=>{
+  res.render('index')
+})
+
 var db = mongoose.connection;
-app.post("/reg", (req, res) => {
+app.post("/signup", (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
   var data = {
@@ -40,5 +44,7 @@ app.post("/reg", (req, res) => {
     }
   });
 });
-
+app.get('/login', (req,res)=>{
+  res.render("login")
+})
 http.createServer(app).listen(3000);
