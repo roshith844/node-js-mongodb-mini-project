@@ -48,11 +48,11 @@ app.get("/signup", (req, res) => {
   res.render("register");
 });
 app.get("/", (req, res) => {
-  /*  if (req.session.user) {*/
+  if (req.session.user) {
   res.render("index");
-  /* } else {
+   } else {
     res.redirect("/login");
-  }*/
+  }
 });
 
 var db = mongoose.connection;
@@ -90,12 +90,13 @@ app.post("/login", async (req, res) => {
       useremail.password === req.body.password &&
       useremail.email === req.body.email
     ) {
-      res.render("index");
+      req.session.user = req.body.email;
+      res.redirect("/");
     } else {
       res.redirect("/login");
     }
   } catch {
-    res.status(400).send("invalid details");
+    res.status(400).redirect("/login");
   }
   console.log(req.body.email);
   console.log(req.body.password);
