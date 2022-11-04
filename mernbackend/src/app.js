@@ -1,7 +1,7 @@
 const express = require("express");
 const http = require("http");
-const session = require('express-session')
-const cookieParser = require('cookie-parser')
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 require("./db/conn.js");
 
 const path = require("path");
@@ -47,13 +47,13 @@ hbs.registerPartials(partials_path);
 app.get("/signup", (req, res) => {
   res.render("register");
 });
-app.get('/', (req, res)=>{
-/*  if (req.session.user) {*/
-    res.render("index");
- /* } else {
+app.get("/", (req, res) => {
+  /*  if (req.session.user) {*/
+  res.render("index");
+  /* } else {
     res.redirect("/login");
   }*/
-})
+});
 
 var db = mongoose.connection;
 app.post("/signup", (req, res) => {
@@ -68,20 +68,38 @@ app.post("/signup", (req, res) => {
       throw err;
     } else {
       console.log("data inserted");
-      res.render("index");
+      res.redirect("/login");
     }
   });
 });
 
-app.get('/login', (req,res)=>{
+app.get("/login", (req, res) => {
   /* req.session.user = req.body.email; */
-  res.render("login")
-})
-
-app.post('/login',(req,res)=>{
-  console.log(req.body.email)
-  console.log(req.body.password)
-})
+  res.render("login");
+});
+// login validation
+app.post("/login", async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    const useremail = await mongoose.connection
+      .collection("users")
+      .findOne({ email: email });
+    console.log(useremail.password);
+    if (
+      useremail.password === req.body.password &&
+      useremail.email === req.body.email
+    ) {
+      res.render("index");
+    } else {
+      res.redirect("/login");
+    }
+  } catch {
+    res.status(400).send("invalid details");
+  }
+  console.log(req.body.email);
+  console.log(req.body.password);
+});
 // logs out with destroying session
 app.get("/logout", (req, res) => {
   req.session.destroy((error) => {
@@ -91,6 +109,6 @@ app.get("/logout", (req, res) => {
       console.log("logout successfully");
       res.redirect("/login");
     }
-  })
-})
+  });
+});
 http.createServer(app).listen(3000);
