@@ -49,8 +49,8 @@ app.get("/signup", (req, res) => {
 });
 app.get("/", (req, res) => {
   if (req.session.user) {
-  res.render("index");
-   } else {
+    res.render("index");
+  } else {
     res.redirect("/login");
   }
 });
@@ -93,6 +93,7 @@ app.post("/login", async (req, res) => {
       req.session.user = req.body.email;
       res.redirect("/");
     } else {
+      /* res.render('login', {err_messege: "invalid !1"})*/
       res.redirect("/login");
     }
   } catch {
