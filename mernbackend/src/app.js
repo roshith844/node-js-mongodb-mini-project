@@ -72,9 +72,15 @@ app.post("/signup", (req, res) => {
     }
   });
 });
+
 app.get('/login', (req,res)=>{
   /* req.session.user = req.body.email; */
   res.render("login")
+})
+
+app.post('/login',(req,res)=>{
+  console.log(req.body.email)
+  console.log(req.body.password)
 })
 // logs out with destroying session
 app.get("/logout", (req, res) => {
