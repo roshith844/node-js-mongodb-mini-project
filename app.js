@@ -5,6 +5,8 @@ const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+require("./db-connection")
+const { default: mongoose } = require("mongoose");
 // calls morgan
 var morgan = require("morgan");
 /* initialises npm modules */
@@ -47,10 +49,57 @@ app.use(
 );
 
 //navigates to routes
+app.get("/signup", (req, res) => {
+     res.render("signup");
+   });
+
+   var db = mongoose.connection;
+app.post("/signup", (req, res) => {
+  var email = req.body.email;
+  var password = req.body.password;
+  var data = {
+    email: email,
+    password: password,
+  };
+  mongoose.connection.collection("users").insertOne(data, (err, collection) => {
+    if (err) {
+      throw err;
+    } else {
+      console.log("data inserted");
+      res.redirect("/login");
+    }
+  });
+});
 
 app.get("/login", (req, res) => {
   res.render("login");
 });
+
+app.post("/login", async (req, res) => {
+     try {
+       const email = req.body.email;
+       const password = req.body.password;
+       const useremail = await mongoose.connection
+         .collection("users")
+         .findOne({ email: email });
+       console.log(useremail.password);
+       if (
+         useremail.password === req.body.password &&
+         useremail.email === req.body.email
+       ) {
+         req.session.user = req.body.email;
+         res.redirect("/");
+       } else {
+         /* res.render('login', {err_messege: "invalid !1"})*/
+         res.redirect("/login");
+       }
+     } catch {
+       res.status(400).redirect("/login");
+     }
+     console.log(req.body.email);
+     console.log(req.body.password);
+   });
+
 // logs out with destroying session
 app.get("/logout", (req, res) => {
   req.session.destroy((error) => {
