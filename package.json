@@ -17,6 +17,11 @@
   },
   "homepage": "https://github.com/roshith844/node-js-mongodb-mini-project#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.17.3",
+    "morgan": "^1.10.0"
   }
 }
