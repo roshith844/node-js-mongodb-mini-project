@@ -119,7 +119,7 @@ app.get('/admin/login', (req,res)=>{
      res.render('admin-login')
 })
 app.post('/admin/login',(req, res)=>{
-     
+     console.log(req.body)
 })
 //server
 
