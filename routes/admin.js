@@ -33,7 +33,10 @@ router.use(
 );
 router.get("/", (req, res) => {
      if (req.session.user) {
+     //      const userList = mongoose.connection.collection("users").findOne({})
+     //   console.log(userList)
        res.render("admin-home");
+       
      } else {
        res.redirect("/admin/login");
      }
@@ -82,5 +85,6 @@ router.post("/login", async (req, res) => {
        }
      });
    });
+  
 
 module.exports = router;
