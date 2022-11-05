@@ -37,8 +37,9 @@ router.get("/login", (req, res) => {
   res.render("admin-login");
 });
 
-app.post("/admin/login", (req, res) => {
+router.post("/admin/login", (req, res) => {
   console.log(req.body);
 });
+
 
 module.exports = router;
