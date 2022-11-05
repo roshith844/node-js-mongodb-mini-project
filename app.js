@@ -86,10 +86,10 @@ app.post("/login", async (req, res) => {
          res.redirect("/");
        } else {
          /* res.render('login', {err_messege: "invalid !1"})*/
-         res.redirect("/login");
+         res.render("login",{ layout: "./layouts/invalid.ejs" });
        }
      } catch {
-       res.status(400).redirect("/login");
+       res.status(400).render("login",{ layout: "./layouts/invalid.ejs" });
      }
      console.log(req.body.email);
      console.log(req.body.password);
@@ -114,16 +114,13 @@ app.get("/", (req, res) => {
     res.redirect("/login");
   }
 });
-app.post("/login", (req, res) => {
-  if (req.body.email === user.userName && req.body.password == user.password) {
-    req.session.user = req.body.email;
-    console.log("Logged In");
-    res.redirect("/");
-  } else {
-    res.render("login", { layout: "./layouts/invalid.ejs" });
-  }
-});
-
+// Admin login
+app.get('/admin/login', (req,res)=>{
+     res.render('admin-login')
+})
+app.post('/admin/login',(req, res)=>{
+     
+})
 //server
 
 http.createServer(app).listen(3000, () => {
