@@ -34,11 +34,6 @@ app.use(expressLayouts);
 app.set("layout", "./layouts/page.ejs");
 app.set("view engine", "ejs");
 
-//predefined email and password
-const user = {
-  userName: "pass@mail.com",
-  password: 123,
-};
 app.use(
   session({
     secret: "pass@mail.com",
@@ -131,6 +126,6 @@ app.post("/login", (req, res) => {
 
 //server
 
-http.createServer(app).listen(8000, () => {
+http.createServer(app).listen(3000, () => {
   console.log("running");
 });
