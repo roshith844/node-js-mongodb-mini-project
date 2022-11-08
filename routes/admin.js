@@ -4,7 +4,8 @@ const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 require("../db-connection");
-const { default: mongoose } = require("mongoose");
+const { default: mongoose } = require("mongoose")
+const Usermodel = require('../model/schema')
 
 router.use(expressLayouts);
 router.use(express.urlencoded({ extended: true }));
@@ -31,12 +32,13 @@ router.use(
     resave: false,
   })
 );
+
+
 router.get("/", (req, res) => {
      if (req.session.user) {
      //      const userList = mongoose.connection.collection("users").findOne({})
      //   console.log(userList)
-       res.render("admin-home");
-       
+       res.render("admin-home");     
      } else {
        res.redirect("/admin/login");
      }

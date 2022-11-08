@@ -8,6 +8,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 require("../db-connection");
 const { default: mongoose } = require("mongoose");
+const Usermodel = require('../model/schema')
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
@@ -46,18 +47,13 @@ var db = mongoose.connection;
 router.post("/signup", (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
-  var data = {
-    email: email,
-    password: password,
-  };
-  mongoose.connection.collection("users").insertOne(data, (err, collection) => {
-    if (err) {
-      throw err;
-    } else {
-      console.log("data inserted");
-      res.redirect("/login");
-    }
-  });
+const newUser = new Usermodel({email: email,
+  password: password})
+  newUser.save().then(()=>{
+    console.log('user added with model')
+    res.redirect('/login')
+  })
+
 });
 
 router.get("/login", (req, res) => {
