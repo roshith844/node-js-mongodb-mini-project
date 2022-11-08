@@ -5,7 +5,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 require("../db-connection");
 const { default: mongoose } = require("mongoose")
-const Usermodel = require('../model/schema')
+const Adminmodel = require('../model/adminSchema')
 
 router.use(expressLayouts);
 router.use(express.urlencoded({ extended: true }));
@@ -34,15 +34,6 @@ router.use(
 );
 
 
-router.get("/", (req, res) => {
-     if (req.session.user) {
-     //      const userList = mongoose.connection.collection("users").findOne({})
-     //   console.log(userList)
-       res.render("admin-home");     
-     } else {
-       res.redirect("/admin/login");
-     }
-   });
 // Admin login
 router.get("/login", (req, res) => {
   res.render("admin-login");
@@ -53,17 +44,11 @@ router.post("/login", async (req, res) => {
        const name = req.body.name
        const email = req.body.email;
        const password = req.body.password;
-       const adminemail = await mongoose.connection
-         .collection("admins")
-         .findOne({ email: email });
-       console.log(adminemail);
-       console.log(adminemail.password)
-       console.log(req.body.password)
-       console.log(adminemail.email)
-       console.log(req.body.email)
+       const adminemail = await Adminmodel.findOne({email: email})
+       
        if (
          adminemail.password == req.body.password &&
-         adminemail.email === req.body.email
+         adminemail.email == req.body.email
          
        ) {
          req.session.user = req.body.email;
@@ -87,6 +72,15 @@ router.post("/login", async (req, res) => {
        }
      });
    });
-  
+   router.get("/", (req, res) => {
+    if (req.session.user) {
+    //      const userList = mongoose.connection.collection("users").findOne({})
+    //   console.log(userList)
+    
+      res.render("admin-home");     
+    } else {
+      res.redirect("/admin/login");
+    }
+  });
 
 module.exports = router;

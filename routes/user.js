@@ -62,12 +62,11 @@ router.post("/login", async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    const useremail = await mongoose.connection
-      .collection("users")
-      .findOne({ email: email });
-    console.log(useremail.password);
+
+    const useremail = await Usermodel.findOne({ email: email });
+
     if (
-      useremail.password === req.body.password &&
+      useremail.password == req.body.password &&
       useremail.email === req.body.email
     ) {
       req.session.user = req.body.email;
