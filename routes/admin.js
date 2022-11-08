@@ -112,8 +112,14 @@ router.get("/edit-user/:id", (req, res) => {
      res.render('edit-user', {data: result})
   })
 /*  Usermodel.replaceOne({_id: req.params.id},{emai})*/
-  
 });
+
+router.post('/edit-user', (req, res)=>{
+  Usermodel.replaceOne({_id: req.body.dbId},{email: req.body.email, password: req.body.password}).then(()=>{
+    console.log("data modified")
+    res.redirect('/admin')
+  })
+})
 
 router.get("/delete-user/:id", (req, res) => {
   let userId = req.params.id;
