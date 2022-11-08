@@ -81,16 +81,27 @@ router.post("/login", async (req, res) => {
          console.log(result)
          res.render("admin-home",{data: result});
        })
-    
-         
+     
     } else {
       res.redirect("/admin/login");
     }
   });
 router.post('/search', (req, res)=>{
-  console.log(req.body.searchInput)
+
   const searchData = Usermodel.find({email: req.body.searchInput}).then((result)=>{
     res.render("admin-home",{data: result});
   })
+})
+router.get('/create-user', (req, res)=>{
+  res.render('create-user')
+} )
+router.post('/create-user', (req, res)=>{
+  var email = req.body.email;
+  var password = req.body.password;
+  const newUser = new Usermodel({ email: email, password: password });
+  newUser.save().then(() => {
+    console.log("user added by Admin");
+    res.redirect("/");
+  });
 })
 module.exports = router;
