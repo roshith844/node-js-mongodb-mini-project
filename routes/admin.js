@@ -87,5 +87,10 @@ router.post("/login", async (req, res) => {
       res.redirect("/admin/login");
     }
   });
-
+router.post('/search', (req, res)=>{
+  console.log(req.body.searchInput)
+  const searchData = Usermodel.find({email: req.body.searchInput}).then((result)=>{
+    res.render("admin-home",{data: result});
+  })
+})
 module.exports = router;
