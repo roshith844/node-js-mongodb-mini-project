@@ -36,7 +36,7 @@ router.use(
 
 // Admin login
 router.get("/login", (req, res) => {
-  res.render("admin-login");
+  res.render("admin-login",{msg: ''});
 });
 
 router.post("/login", async (req, res) => {
@@ -54,10 +54,10 @@ router.post("/login", async (req, res) => {
       res.redirect("/admin");
     } else {
       /* res.render('login', {err_messege: "invalid !1"})*/
-      res.render("admin-login", { layout: "./layouts/invalid.ejs" });
+      res.render("admin-login", {msg: "Invalid!! Please Try Again" });
     }
   } catch {
-    res.status(400).render("admin-login", { layout: "./layouts/invalid.ejs" });
+    res.status(400).render("admin-login", {msg: "Invalid!! Please Try Again" });
   }
 });
 

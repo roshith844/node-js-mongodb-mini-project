@@ -1,4 +1,9 @@
-<h1>Admin login page</h1>
+<h1>Admin Login page</h1>
+<% if(msg.length>0){ %>
+  <div class="alert alert-danger" role="alert">
+    <%= msg %>
+  </div>
+<% } %>
 <form action="/admin/login" method="POST">
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Full Name</label>
