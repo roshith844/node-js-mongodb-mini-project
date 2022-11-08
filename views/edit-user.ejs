@@ -1,0 +1,14 @@
+<form action="/admin/edit-user" method="POST">
+     <% data.forEach((item)=>{%>
+          <label for="">
+               <input type="text" value="<%= item._id %>">
+          </label>
+     <label for="">Email
+          <input type="email" value="<%= item.email %>">
+     </label>
+     <label for="">Password
+          <input type="text" value="<%= item.password %>">
+     </label>
+     <% }) %>
+     <input type="submit" value="submit" >
+</form>

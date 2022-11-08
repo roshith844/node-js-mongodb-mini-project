@@ -1,26 +1,26 @@
 <a href="/logout">Log Out</a>
 <form action="/admin/search" method="POST">
-     <input type="search" name="searchInput" placeholder="search here">
-     <input type="submit" value="search">
+  <input type="search" name="searchInput" placeholder="search here" />
+  <input type="submit" value="search" />
 </form>
 <a href="/admin/create-user"><button>Create User</button></a>
 <table class="table">
   <thead>
     <tr>
-     <th scope="col">No</th>
+      <th scope="col">No</th>
       <th scope="col">Email</th>
       <th scope="col">Password</th>
     </tr>
   </thead>
   <tbody>
-     <% let count = 1; %>
-    <% data.forEach((item)=>{%>
+    <% let count = 1; %> <% data.forEach((item)=>{%>
     <tr>
-     <td><%= count %></td>
+      <td><%= count %></td>
       <td><%= item.email %></td>
       <td><%= item.password %></td>
+      <td><a href="/admin/edit-user/<%= item._id %>">Edit</a></td>
+      <td><a href="/admin/delete-user/<%= item._id %>">Delete</a></td>
     </tr>
-<% count++; %>
-    <% }) %>
+    <% count++; %> <% }) %>
   </tbody>
 </table>
