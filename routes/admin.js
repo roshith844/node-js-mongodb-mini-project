@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 require("../db-connection");
 const { default: mongoose } = require("mongoose")
 const Adminmodel = require('../model/adminSchema')
+const Usermodel = require("../model/schema");
 
 router.use(expressLayouts);
 router.use(express.urlencoded({ extended: true }));
@@ -76,8 +77,12 @@ router.post("/login", async (req, res) => {
     if (req.session.user) {
     //      const userList = mongoose.connection.collection("users").findOne({})
     //   console.log(userList)
+       const userList = Usermodel.find({},{email: 1, password: 1}).then((result)=>{
+         console.log(result)
+         res.render("admin-home",{data: result});
+       })
     
-      res.render("admin-home");     
+         
     } else {
       res.redirect("/admin/login");
     }
