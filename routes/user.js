@@ -12,11 +12,13 @@ const Usermodel = require("../model/schema");
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
+
 // middlewares not to store cache
 router.use((req, res, next) => {
   res.set("Cache-Control", "no-store");
   next();
 });
+
 // initiates cookie and session
 router.use(cookieParser());
 router.use(
@@ -31,7 +33,7 @@ router.use(expressLayouts);
 
 router.use(
   session({
-    secret: "pass@mail.com",
+    secret: "secret",
     saveUninitialized: true,
     cookie: { maxAge: 60000 },
     resave: false,
@@ -43,7 +45,6 @@ router.get("/signup", (req, res) => {
   res.render("signup");
 });
 
-var db = mongoose.connection;
 router.post("/signup", (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
@@ -55,28 +56,24 @@ router.post("/signup", (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", {msg:""});
 });
 
 router.post("/login", async (req, res) => {
   try {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    const useremail = await Usermodel.findOne({ email: email });
-
+    const useremail = await Usermodel.findOne({ email: req.body.email });
     if (
       useremail.password == req.body.password &&
       useremail.email === req.body.email
     ) {
       req.session.user = req.body.email;
-      res.redirect("/");
+      res.render("login",{msg: ""});
     } else {
       /* res.render('login', {err_messege: "invalid !1"})*/
-      res.render("login", { layout: "./layouts/invalid.ejs" });
+      res.render("login",{msg: "invalid credentials!! Try Again"});
     }
   } catch {
-    res.status(400).render("login", { layout: "./layouts/invalid.ejs" });
+    res.status(400).render("login", { msg: 'invalid credentials!! Try Again'});
   }
   console.log(req.body.email);
   console.log(req.body.password);
