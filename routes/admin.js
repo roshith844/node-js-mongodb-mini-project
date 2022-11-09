@@ -71,6 +71,9 @@ router.get("/logout", (req, res) => {
     }
   });
 });
+
+
+
 router.get("/", (req, res) => {
   if (req.session.user) {
     //      const userList = mongoose.connection.collection("users").findOne({})
@@ -85,47 +88,70 @@ router.get("/", (req, res) => {
     res.redirect("/admin/login");
   }
 });
+
+// if (req.session.user) {}else{  res.redirect("/admin/login");}
 router.post("/search", (req, res) => {
-  const searchData = Usermodel.find({ email: req.body.searchInput }).then(
-    (result) => {
-      res.render("admin-home", { data: result });
-    }
-  );
+  if (req.session.user) {
+    const searchData = Usermodel.find({ email: req.body.searchInput }).then(
+      (result) => {
+        res.render("admin-home", { data: result });
+      }
+    );
+  }else{  res.redirect("/admin/login");}
+ 
 });
+
+
 router.get("/create-user", (req, res) => {
-  res.render("create-user");
+  if (req.session.user) {
+    res.render("create-user");
+  }else{  res.redirect("/admin/login");}
+
 });
+// if (req.session.user) {}else{  res.redirect("/admin/login");}
 router.post("/create-user", (req, res) => {
-  var email = req.body.email;
+  if (req.session.user) {
+    var email = req.body.email;
   var password = req.body.password;
   const newUser = new Usermodel({ email: email, password: password });
   newUser.save().then(() => {
     console.log("user added by Admin");
     res.redirect("/admin");
   });
+  }else{  res.redirect("/admin/login");}
+  
 });
 
 router.get("/edit-user/:id", (req, res) => {
 
+ if (req.session.user) {
   Usermodel.find({_id: req.params.id}).then((result)=>{
     console.log(result)
      res.render('edit-user', {data: result})
   })
+ }else{  res.redirect("/admin/login");}
+
 /*  Usermodel.replaceOne({_id: req.params.id},{emai})*/
 });
 
 router.post('/edit-user', (req, res)=>{
-  Usermodel.replaceOne({_id: req.body.dbId},{email: req.body.email, password: req.body.password}).then(()=>{
-    console.log("data modified")
-    res.redirect('/admin')
-  })
+ 
+  if (req.session.user) {
+    Usermodel.replaceOne({_id: req.body.dbId},{email: req.body.email, password: req.body.password}).then(()=>{
+      console.log("data modified")
+      res.redirect('/admin')
+    })
+  }else{  res.redirect("/admin/login");}
+ 
 })
 
 router.get("/delete-user/:id", (req, res) => {
-  let userId = req.params.id;
-  Usermodel.deleteOne({ _id: userId }).then(() => {
-    console.log("user deleted");
-    res.redirect("/admin");
-  });
+  if (req.session.user) {
+    let userId = req.params.id;
+    Usermodel.deleteOne({ _id: userId }).then(() => {
+      console.log("user deleted");
+      res.redirect("/admin");
+    });
+  }else{  res.redirect("/admin/login");}
 });
 module.exports = router;
