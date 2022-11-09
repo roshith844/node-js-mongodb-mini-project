@@ -1,25 +1,24 @@
 "use strict";
-// calls required modules
-const http = require("http");
 const express = require("express");
 const router = express.Router();
 const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 require("../db-connection");
-const { default: mongoose } = require("mongoose");
 const Usermodel = require("../model/schema");
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
-// middlewares not to store cache
+router.use(expressLayouts);
+
+// Middlewares not to store cache
 router.use((req, res, next) => {
   res.set("Cache-Control", "no-store");
   next();
 });
 
-// initiates cookie and session
+// Initiates cookie and session
 router.use(cookieParser());
 router.use(
   session({
@@ -28,8 +27,6 @@ router.use(
     secret: "secret",
   })
 );
-
-router.use(expressLayouts);
 
 router.use(
   session({
@@ -40,7 +37,7 @@ router.use(
   })
 );
 
-//navigates to routes
+// Routes
 router.get("/signup", (req, res) => {
   res.render("signup");
 });
@@ -56,7 +53,7 @@ router.post("/signup", (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-  res.render("login", {msg:""});
+  res.render("login", { msg: "" });
 });
 
 router.post("/login", async (req, res) => {
@@ -67,20 +64,19 @@ router.post("/login", async (req, res) => {
       useremail.email === req.body.email
     ) {
       req.session.user = req.body.email;
-      res.render("login",{msg: ""});
+      res.render("login", { msg: "" });
     } else {
-      /* res.render('login', {err_messege: "invalid !1"})*/
-      res.render("login",{msg: "invalid credentials!! Try Again"});
+      res.render("login", { msg: "invalid credentials!! Try Again" });
     }
   } catch {
-    res.status(400).render("login", { msg: 'invalid credentials!! Try Again'});
+    res.status(400).render("login", { msg: "invalid credentials!! Try Again" });
   }
   console.log(req.body.email);
   console.log(req.body.password);
 });
 
-// logs out with destroying session
 router.get("/logout", (req, res) => {
+  // Destroys session
   req.session.destroy((error) => {
     if (error) {
       console.log(error);
@@ -98,4 +94,5 @@ router.get("/", (req, res) => {
     res.redirect("/login");
   }
 });
+
 module.exports = router;

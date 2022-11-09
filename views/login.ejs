@@ -1,24 +1,37 @@
 <h1>login page</h1>
 <% if(msg.length>0){ %>
-  <div class="alert alert-danger" role="alert">
-    <%= msg %>
-  </div>
+<div class="alert alert-danger" role="alert"><%= msg %></div>
 <% } %>
 <form action="/login" method="POST">
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    <input
+      name="email"
+      type="email"
+      class="form-control"
+      id="exampleInputEmail1"
+      aria-describedby="emailHelp"
+      required
+    />
+    <div id="emailHelp" class="form-text">
+      We'll never share your email with anyone else.
+    </div>
   </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input name="password" type="password" class="form-control" id="exampleInputPassword1" required>
+    <input
+      name="password"
+      type="password"
+      class="form-control"
+      id="exampleInputPassword1"
+      required
+    />
   </div>
-  <input type="submit" class="btn btn-primary">
+  <input type="submit" class="btn btn-primary" />
 </form>
 <a href="/signup"> Not Yet Registered? Click here to Sign Up</a>
 <script>
-  if ( window.history.replaceState ) {
-  window.history.replaceState( null, null, window.location.href );
+  if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
   }
 </script>

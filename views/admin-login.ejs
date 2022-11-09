@@ -1,8 +1,6 @@
 <h1>Admin Login page</h1>
 <% if(msg.length>0){ %>
-  <div class="alert alert-danger" role="alert">
-    <%= msg %>
-  </div>
+<div class="alert alert-danger" role="alert"><%= msg %></div>
 <% } %>
 <form action="/admin/login" method="POST">
   <div class="mb-3">
