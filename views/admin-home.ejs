@@ -1,9 +1,9 @@
-<a href="/logout">Log Out</a>
+<a href="/logout"><button class="btn btn-danger">Log Out</button></a>
 <form action="/admin/search" method="POST">
-  <input type="search" name="searchInput" placeholder="search here" />
-  <input type="submit" value="search" />
+  <input type="search" name="searchInput" placeholder="search here"/>
+  <input type="submit" value="search" class="btn btn-info" />
 </form>
-<a href="/admin/create-user"><button>Create User</button></a>
+<a href="/admin/create-user"><button class="btn btn-success">Create User</button></a>
 <table class="table">
   <thead>
     <tr>
@@ -18,8 +18,8 @@
       <td><%= count %></td>
       <td><%= item.email %></td>
       <td><%= item.password %></td>
-      <td><a href="/admin/edit-user/<%= item._id %>">Edit</a></td>
-      <td><a href="/admin/delete-user/<%= item._id %>">Delete</a></td>
+      <td><a href="/admin/edit-user/<%= item._id %>" class="btn btn-primary">Edit</a></td>
+      <td><a href="/admin/delete-user/<%= item._id %>" class="btn btn-danger">Delete</a></td>
     </tr>
     <% count++; %> <% }) %>
   </tbody>
