@@ -64,7 +64,7 @@ router.post("/login", async (req, res) => {
       useremail.email === req.body.email
     ) {
       req.session.user = req.body.email;
-      res.render("login", { msg: "" });
+      res.redirect("/");
     } else {
       res.render("login", { msg: "invalid credentials!! Try Again" });
     }

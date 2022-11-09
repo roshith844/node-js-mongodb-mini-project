@@ -49,7 +49,7 @@ router.post("/login", async (req, res) => {
 
     // Validates Password
     if (adminemail.password == req.body.password) {
-      req.session.user = req.body.email; // Creates Session
+      req.session.admin = req.body.email; // Creates Session
       res.redirect("/admin");
     } else {
       res.render("admin-login", { msg: "Invalid!! Please Try Again" });
@@ -74,7 +74,7 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  if (req.session.user) {
+  if (req.session.admin) {
     // Gets all Data from Database
     Usermodel.find({}, { email: 1, password: 1 }).then((result) => {
       res.render("admin-home", { data: result });
@@ -85,7 +85,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/search", (req, res) => {
-  if (req.session.user) {
+  if (req.session.admin) {
     // Searches From DataBase
     Usermodel.find({ email: req.body.searchInput }).then((result) => {
       res.render("admin-home", { data: result });
@@ -96,7 +96,7 @@ router.post("/search", (req, res) => {
 });
 
 router.get("/create-user", (req, res) => {
-  if (req.session.user) {
+  if (req.session.admin) {
     res.render("create-user");
   } else {
     res.redirect("/admin/login");
@@ -104,7 +104,7 @@ router.get("/create-user", (req, res) => {
 });
 
 router.post("/create-user", (req, res) => {
-  if (req.session.user) {
+  if (req.session.admin) {
     var email = req.body.email;
     var password = req.body.password;
     const newUser = new Usermodel({ email: email, password: password });
@@ -118,7 +118,7 @@ router.post("/create-user", (req, res) => {
 });
 
 router.get("/edit-user/:id", (req, res) => {
-  if (req.session.user) {
+  if (req.session.admin) {
     Usermodel.find({ _id: req.params.id }).then((result) => {
       console.log(result);
       res.render("edit-user", { data: result });
@@ -129,7 +129,7 @@ router.get("/edit-user/:id", (req, res) => {
 });
 
 router.post("/edit-user", (req, res) => {
-  if (req.session.user) {
+  if (req.session.admin) {
     Usermodel.replaceOne(
       { _id: req.body.dbId },
       { email: req.body.email, password: req.body.password }
@@ -143,7 +143,7 @@ router.post("/edit-user", (req, res) => {
 });
 
 router.get("/delete-user/:id", (req, res) => {
-  if (req.session.user) {
+  if (req.session.admin) {
     const userId = req.params.id;
     Usermodel.deleteOne({ _id: userId }).then(() => {
       console.log("user deleted");
